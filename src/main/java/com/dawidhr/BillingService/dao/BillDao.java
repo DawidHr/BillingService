@@ -1,5 +1,6 @@
 package com.dawidhr.BillingService.dao;
 
+import com.dawidhr.BillingService.model.bill.Bill;
 import com.dawidhr.BillingService.repository.BillRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,4 +12,8 @@ public class BillDao {
     BillRepository billRepository;
     @Autowired
     EntityManager entityManager;
+
+    public void save(Bill bill) {
+        billRepository.saveAndFlush(bill);
+    }
 }

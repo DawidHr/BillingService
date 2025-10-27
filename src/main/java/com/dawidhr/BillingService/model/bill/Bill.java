@@ -1,12 +1,12 @@
 package com.dawidhr.BillingService.model.bill;
 
+import com.dawidhr.BillingService.dto.bill.BillDto;
+import com.dawidhr.BillingService.dto.bill.BillItemDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +36,23 @@ public class Bill {
     @OneToMany(mappedBy = "bill")
     private List<BillItem> items;
 
+    public static Bill create(BillDto billDto) {
+        return Bill.builder()
+                .name(billDto.getName())
+                .description(billDto.getDescription())
+                .buyDate(billDto.getBuyDate())
+                .totalPrice(billDto.getTotalPrice())
+                .items(assignItems(billDto.getItems()))
+                .build();
+    }
+
+    private static List<BillItem> assignItems(List<BillItemDto> itemDtos) {
+        List<BillItem> items = new ArrayList<>();
+        for(BillItemDto itemDto: itemDtos) {
+            BillItem singleItem = BillItem.create(itemDto);
+            items.add(singleItem);
+        }
+
+        return items;
+    }
 }

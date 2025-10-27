@@ -1,16 +1,15 @@
 package com.dawidhr.BillingService.model.bill;
 
+import com.dawidhr.BillingService.dto.bill.BillItemDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class BillItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +22,11 @@ public class BillItem {
     @ManyToOne
     @JoinColumn(name = "bill_id")
     private Bill bill;
+
+    public static BillItem create(BillItemDto itemDto) {
+        return BillItem.builder()
+                .name(itemDto.getName())
+                .price(itemDto.getPrice())
+                .build();
+    }
 }
