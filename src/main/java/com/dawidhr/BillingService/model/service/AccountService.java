@@ -21,8 +21,7 @@ public class AccountService {
         if (account != null)
             return;
 
-
-        //crate
-        // return ok
+        account = Account.create(accountDto);
+        accountDao.save(account);
     }
 }

@@ -1,11 +1,18 @@
 package com.dawidhr.BillingService.model.account;
 
+import com.dawidhr.BillingService.model.dto.account.AccountDto;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +33,12 @@ public class Account {
     @CreationTimestamp
     @Column(name = "creation_date", nullable=false, updatable = false)
     private LocalDateTime creationDate;
+
+    public static Account create(AccountDto accountDto) {
+        return Account.builder()
+                .email(accountDto.getEmail())
+                .password(accountDto.getPassword())
+                .role(AccountRole.USER)
+                .build();
+    }
 }

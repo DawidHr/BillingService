@@ -19,4 +19,8 @@ public class AccountDao {
         query.setParameter("email", email);
         return query.getResultList().isEmpty() ? null : query.getSingleResult();
     }
+
+    public void save(Account account) {
+        accountRepository.save(account);
+    }
 }
