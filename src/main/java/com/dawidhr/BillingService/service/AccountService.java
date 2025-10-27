@@ -1,8 +1,8 @@
-package com.dawidhr.BillingService.model.service;
+package com.dawidhr.BillingService.service;
 
 import com.dawidhr.BillingService.model.account.Account;
-import com.dawidhr.BillingService.model.dao.AccountDao;
-import com.dawidhr.BillingService.model.dto.account.AccountDto;
+import com.dawidhr.BillingService.dao.AccountDao;
+import com.dawidhr.BillingService.dto.account.AccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

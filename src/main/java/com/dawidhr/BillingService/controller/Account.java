@@ -1,7 +1,7 @@
-package com.dawidhr.BillingService.model.controller;
+package com.dawidhr.BillingService.controller;
 
-import com.dawidhr.BillingService.model.dto.account.AccountDto;
-import com.dawidhr.BillingService.model.service.AccountService;
+import com.dawidhr.BillingService.dto.account.AccountDto;
+import com.dawidhr.BillingService.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

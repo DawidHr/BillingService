@@ -1,7 +1,7 @@
-package com.dawidhr.BillingService.model.dao;
+package com.dawidhr.BillingService.dao;
 
 import com.dawidhr.BillingService.model.account.Account;
-import com.dawidhr.BillingService.model.repository.AccountRepository;
+import com.dawidhr.BillingService.repository.AccountRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;

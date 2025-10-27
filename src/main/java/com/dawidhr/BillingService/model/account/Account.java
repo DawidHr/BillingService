@@ -1,6 +1,6 @@
 package com.dawidhr.BillingService.model.account;
 
-import com.dawidhr.BillingService.model.dto.account.AccountDto;
+import com.dawidhr.BillingService.dto.account.AccountDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

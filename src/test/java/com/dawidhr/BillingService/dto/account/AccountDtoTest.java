@@ -1,4 +1,4 @@
-package com.dawidhr.BillingService.model.dto.account;
+package com.dawidhr.BillingService.dto.account;
 
 import org.junit.jupiter.api.Test;
 

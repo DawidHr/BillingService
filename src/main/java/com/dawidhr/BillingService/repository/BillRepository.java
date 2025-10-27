@@ -1,4 +1,4 @@
-package com.dawidhr.BillingService.model.repository;
+package com.dawidhr.BillingService.repository;
 
 
 import com.dawidhr.BillingService.model.bill.Bill;

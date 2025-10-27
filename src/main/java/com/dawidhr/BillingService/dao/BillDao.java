@@ -1,6 +1,6 @@
-package com.dawidhr.BillingService.model.dao;
+package com.dawidhr.BillingService.dao;
 
-import com.dawidhr.BillingService.model.repository.BillRepository;
+import com.dawidhr.BillingService.repository.BillRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
