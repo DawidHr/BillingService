@@ -1,5 +1,6 @@
 package com.dawidhr.BillingService.service;
 
+import com.dawidhr.BillingService.dto.account.AccountUpdatePassword;
 import com.dawidhr.BillingService.model.account.Account;
 import com.dawidhr.BillingService.dao.AccountDao;
 import com.dawidhr.BillingService.dto.account.AccountDto;
@@ -14,7 +15,7 @@ public class AccountService {
 
 
     public void crate(AccountDto accountDto) {
-        if(!AccountDto.isValid(accountDto))
+        if (!AccountDto.isValid(accountDto))
             return;
 
         Account account = accountDao.findByEmail(accountDto.getEmail());
@@ -23,5 +24,21 @@ public class AccountService {
 
         account = Account.create(accountDto);
         accountDao.save(account);
+    }
+
+    public void updatePassword(AccountUpdatePassword accountUpdatePassword) {
+        if (!AccountUpdatePassword.isValid(accountUpdatePassword))
+            return;
+
+        Account account = accountDao.findByEmail(accountUpdatePassword.getEmail());
+        if (account == null)
+            return;
+
+        if (!account.getPassword().equals(accountUpdatePassword.getOldPassword()))
+            return;
+
+        account.setPassword(accountUpdatePassword.getNewPassword());
+
+        accountDao.update(account);
     }
 }

@@ -23,4 +23,8 @@ public class AccountDao {
     public void save(Account account) {
         accountRepository.save(account);
     }
+
+    public void update(Account account) {
+        accountRepository.save(account);
+    }
 }
