@@ -13,6 +13,8 @@ public class AccountService {
     @Autowired
     AccountDao accountDao;
 
+    @Autowired
+    AuthService authService;
 
     public void crate(AccountDto accountDto) {
         if (!AccountDto.isValid(accountDto))
@@ -40,5 +42,19 @@ public class AccountService {
         account.setPassword(accountUpdatePassword.getNewPassword());
 
         accountDao.update(account);
+    }
+
+    public String login(AccountDto accountDto) {
+        if(!AccountDto.isValid(accountDto))
+            return null;
+
+        Account accountFromDb = accountDao.findByEmail(accountDto.getEmail());
+        if (accountFromDb == null)
+            return null;
+
+        if (accountDto.getEmail().equals(accountFromDb.getEmail()))
+            return authService.create(accountDto.getEmail());
+
+        return null;
     }
 }

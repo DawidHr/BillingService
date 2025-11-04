@@ -22,4 +22,10 @@ public class Account {
     public void updatePassword(@RequestBody AccountUpdatePassword accountUpdatePassword) {
         accountService.updatePassword(accountUpdatePassword);
     }
+
+    @PostMapping
+    @PatchMapping("/login")
+    public String login(@RequestBody AccountDto accountDto) {
+        return accountService.login(accountDto);
+    }
 }
