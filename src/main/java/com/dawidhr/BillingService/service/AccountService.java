@@ -55,7 +55,7 @@ public class AccountService {
         if (accountFromDb == null)
             throw new DataNotFoundException("Account not found");
 
-        if (accountDto.getEmail().equals(accountFromDb.getEmail()))
+        if (accountDto.getPassword().equals(accountFromDb.getPassword()))
             return authService.create(accountDto.getEmail());
 
         throw new DataNotValidException("Account login not valid for Email = "+accountDto.getEmail());
