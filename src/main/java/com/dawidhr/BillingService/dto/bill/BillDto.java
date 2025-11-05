@@ -1,9 +1,6 @@
 package com.dawidhr.BillingService.dto.bill;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
@@ -13,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
+@ToString
 public class BillDto {
     private String name;
     private String description;
