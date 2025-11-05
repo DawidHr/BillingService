@@ -1,15 +1,13 @@
 package com.dawidhr.BillingService.dto.account;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class AccountDto {
     private String email;
     private String password;

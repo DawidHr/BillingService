@@ -1,6 +1,9 @@
 package com.dawidhr.BillingService.service;
 
 import com.dawidhr.BillingService.dto.account.AccountUpdatePassword;
+import com.dawidhr.BillingService.exception.DataAlreadyExistException;
+import com.dawidhr.BillingService.exception.DataNotFoundException;
+import com.dawidhr.BillingService.exception.DataNotValidException;
 import com.dawidhr.BillingService.model.account.Account;
 import com.dawidhr.BillingService.dao.AccountDao;
 import com.dawidhr.BillingService.dto.account.AccountDto;
@@ -18,11 +21,11 @@ public class AccountService {
 
     public void crate(AccountDto accountDto) {
         if (!AccountDto.isValid(accountDto))
-            return;
+            throw new DataNotValidException("Crate account request error. Data = "+accountDto);
 
         Account account = accountDao.findByEmail(accountDto.getEmail());
         if (account != null)
-            return;
+            throw new DataAlreadyExistException("Account already exists.");
 
         account = Account.create(accountDto);
         accountDao.save(account);
@@ -30,14 +33,14 @@ public class AccountService {
 
     public void updatePassword(AccountUpdatePassword accountUpdatePassword) {
         if (!AccountUpdatePassword.isValid(accountUpdatePassword))
-            return;
+            throw new DataNotValidException("Account update password error. Email = "+accountUpdatePassword.getEmail());
 
         Account account = accountDao.findByEmail(accountUpdatePassword.getEmail());
         if (account == null)
-            return;
+            throw new DataNotFoundException("Account not found");
 
         if (!account.getPassword().equals(accountUpdatePassword.getOldPassword()))
-            return;
+            throw new DataNotValidException("Account update password error. Not valid data for Email = "+accountUpdatePassword.getEmail());
 
         account.setPassword(accountUpdatePassword.getNewPassword());
 
@@ -46,15 +49,15 @@ public class AccountService {
 
     public String login(AccountDto accountDto) {
         if(!AccountDto.isValid(accountDto))
-            return null;
+            throw new DataNotValidException("Account login error. Email = "+accountDto.getEmail());
 
         Account accountFromDb = accountDao.findByEmail(accountDto.getEmail());
         if (accountFromDb == null)
-            return null;
+            throw new DataNotFoundException("Account not found");
 
         if (accountDto.getEmail().equals(accountFromDb.getEmail()))
             return authService.create(accountDto.getEmail());
 
-        return null;
+        throw new DataNotValidException("Account login not valid for Email = "+accountDto.getEmail());
     }
 }
