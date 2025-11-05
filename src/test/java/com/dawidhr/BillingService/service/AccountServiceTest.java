@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
@@ -31,25 +31,25 @@ class AccountServiceTest {
 
     @Test
     public void createNotValidTest() {
-       assertThrows(DataNotValidException.class, () -> accountService.crate(new AccountDto()));
-        Mockito.verify(accountDao, Mockito.never()).findByEmail(Mockito.anyString());
-        Mockito.verify(accountDao, Mockito.never()).save(Mockito.any());
+        assertThrows(DataNotValidException.class, () -> accountService.crate(new AccountDto()));
+        verify(accountDao, never()).findByEmail(anyString());
+        verify(accountDao, never()).save(any());
     }
 
     @Test
     public void createAccountAlreadyExistsTest() {
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(new Account());
+        when(accountDao.findByEmail(anyString())).thenReturn(new Account());
         assertThrows(DataAlreadyExistException.class, () -> accountService.crate(new AccountDto("test", "Test123")));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(accountDao, Mockito.never()).save(Mockito.any());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(accountDao, never()).save(any());
     }
 
     @Test
     public void createTest() {
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(null);
+        when(accountDao.findByEmail(anyString())).thenReturn(null);
         accountService.crate(new AccountDto("test", "Test123"));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(accountDao, Mockito.times(1)).save(Mockito.any());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(accountDao, times(1)).save(any());
     }
 
     @Test
@@ -59,64 +59,64 @@ class AccountServiceTest {
 
     @Test
     public void updatePasswordAccountNotFoundTest() {
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(null);
+        when(accountDao.findByEmail(anyString())).thenReturn(null);
         assertThrows(DataNotFoundException.class, () -> accountService.updatePassword(new AccountUpdatePassword("test@test.pl", "test", "test2")));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(accountDao, Mockito.never()).update(Mockito.any());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(accountDao, never()).update(any());
     }
 
     @Test
     public void updatePasswordOldPassNotValidTest() {
         Account account = new Account();
         account.setPassword("test4");
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(account);
+        when(accountDao.findByEmail(anyString())).thenReturn(account);
         assertThrows(DataNotValidException.class, () -> accountService.updatePassword(new AccountUpdatePassword("test@test.pl", "test", "test2")));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(accountDao, Mockito.never()).update(Mockito.any());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(accountDao, never()).update(any());
     }
 
     @Test
     public void updatePasswordTest() {
         Account account = new Account();
         account.setPassword("test");
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(account);
+        when(accountDao.findByEmail(anyString())).thenReturn(account);
         accountService.updatePassword(new AccountUpdatePassword("test@test.pl", "test", "test2"));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(accountDao, Mockito.times(1)).update(Mockito.any());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(accountDao, times(1)).update(any());
     }
 
     @Test
     public void loginRequestNotValidTest() {
         assertThrows(DataNotValidException.class, () -> accountService.login(new AccountDto()));
-        Mockito.verify(accountDao, Mockito.never()).findByEmail(Mockito.anyString());
-        Mockito.verify(authService, Mockito.never()).create(Mockito.anyString());
+        verify(accountDao, never()).findByEmail(anyString());
+        verify(authService, never()).create(anyString());
     }
 
     @Test
     public void loginAccountNotFoundTest() {
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(null);
+        when(accountDao.findByEmail(anyString())).thenReturn(null);
         assertThrows(DataNotFoundException.class, () -> accountService.login(new AccountDto("test@test.pl", "test")));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(authService, Mockito.never()).create(Mockito.anyString());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(authService, never()).create(anyString());
     }
 
     @Test
     public void loginBadPasswordTest() {
         Account account = new Account();
         account.setPassword("test2");
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(account);
+        when(accountDao.findByEmail(anyString())).thenReturn(account);
         assertThrows(DataNotValidException.class, () -> accountService.login(new AccountDto("test@test.pl", "test")));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(authService, Mockito.never()).create(Mockito.anyString());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(authService, never()).create(anyString());
     }
 
     @Test
     public void loginTest() {
         Account account = new Account();
         account.setPassword("test");
-        Mockito.when(accountDao.findByEmail(Mockito.anyString())).thenReturn(account);
+        when(accountDao.findByEmail(anyString())).thenReturn(account);
         accountService.login(new AccountDto("test@test.pl", "test"));
-        Mockito.verify(accountDao, Mockito.times(1)).findByEmail(Mockito.anyString());
-        Mockito.verify(authService, Mockito.times(1)).create(Mockito.anyString());
+        verify(accountDao, times(1)).findByEmail(anyString());
+        verify(authService, times(1)).create(anyString());
     }
 }
