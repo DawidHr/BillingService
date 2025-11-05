@@ -1,0 +1,10 @@
+package com.dawidhr.BillingService.exception;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class DataNotFoundException extends RuntimeException {
+    public DataNotFoundException(String message) {
+        super(message);
+    }
+}
