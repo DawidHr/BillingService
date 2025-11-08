@@ -15,7 +15,7 @@ public class AccountDao {
     EntityManager entityManager;
 
     public Account findByEmail(String email) {
-        TypedQuery<Account> query = entityManager.createQuery("SELECT u FROM Account WHERE u.email = :email", Account.class);
+        TypedQuery<Account> query = entityManager.createQuery("SELECT u FROM Account u WHERE u.email = :email", Account.class);
         query.setParameter("email", email);
         return query.getResultList().isEmpty() ? null : query.getSingleResult();
     }

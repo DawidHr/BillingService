@@ -48,7 +48,7 @@ public class AccountService {
     }
 
     public String login(AccountDto accountDto) {
-        if(!AccountDto.isValid(accountDto))
+        if (!AccountDto.isValid(accountDto))
             throw new DataNotValidException("Account login error. Email = "+accountDto.getEmail());
 
         Account accountFromDb = accountDao.findByEmail(accountDto.getEmail());
