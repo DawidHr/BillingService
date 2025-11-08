@@ -3,6 +3,8 @@ package com.dawidhr.BillingService.service;
 import com.dawidhr.BillingService.exception.DataAlreadyExistException;
 import com.dawidhr.BillingService.exception.DataNotFoundException;
 import com.dawidhr.BillingService.exception.DataNotValidException;
+import com.dawidhr.BillingService.exception.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,5 +25,10 @@ public class ExceptionAdviser {
     @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<String> handleDataNotFoundException() {
         return ResponseEntity.internalServerError().body("Data not found");
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<String> handleUnauthorizedException() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
