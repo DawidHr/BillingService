@@ -34,7 +34,7 @@ public class Bill {
     private Double totalPrice;
 
     @OneToMany(mappedBy = "bill")
-    private List<BillItem> items;
+    private List<BillItem> items = new ArrayList<>();
 
     public static Bill create(BillDto billDto) {
         return Bill.builder()

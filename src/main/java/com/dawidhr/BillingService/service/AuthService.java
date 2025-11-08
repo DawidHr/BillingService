@@ -2,10 +2,12 @@ package com.dawidhr.BillingService.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Service
 public class AuthService {
 
     public String create(String email) {

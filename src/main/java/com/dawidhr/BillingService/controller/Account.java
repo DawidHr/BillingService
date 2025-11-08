@@ -14,6 +14,7 @@ public class Account {
     AccountService accountService;
 
     @PostMapping
+    @RequestMapping("/create")
     public void create(@RequestBody AccountDto accountDto) {
         accountService.crate(accountDto);
     }
@@ -24,7 +25,7 @@ public class Account {
     }
 
     @PostMapping
-    @PatchMapping("/login")
+    @RequestMapping("/login")
     public String login(@RequestBody AccountDto accountDto) {
         return accountService.login(accountDto);
     }
