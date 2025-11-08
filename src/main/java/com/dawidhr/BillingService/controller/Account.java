@@ -20,8 +20,9 @@ public class Account {
     }
 
     @PatchMapping
-    public void updatePassword(@RequestBody AccountUpdatePassword accountUpdatePassword) {
-        accountService.updatePassword(accountUpdatePassword);
+    @RequestMapping("/password-update")
+    public void updatePassword(@RequestHeader("Authorization") String authHeader, @RequestBody AccountUpdatePassword accountUpdatePassword) {
+        accountService.updatePassword(authHeader, accountUpdatePassword);
     }
 
     @PostMapping

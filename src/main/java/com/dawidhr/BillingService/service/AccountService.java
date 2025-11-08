@@ -4,9 +4,11 @@ import com.dawidhr.BillingService.dto.account.AccountUpdatePassword;
 import com.dawidhr.BillingService.exception.DataAlreadyExistException;
 import com.dawidhr.BillingService.exception.DataNotFoundException;
 import com.dawidhr.BillingService.exception.DataNotValidException;
+import com.dawidhr.BillingService.exception.UnauthorizedException;
 import com.dawidhr.BillingService.model.account.Account;
 import com.dawidhr.BillingService.dao.AccountDao;
 import com.dawidhr.BillingService.dto.account.AccountDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,10 @@ public class AccountService {
         accountDao.save(account);
     }
 
-    public void updatePassword(AccountUpdatePassword accountUpdatePassword) {
+    public void updatePassword(String auth, AccountUpdatePassword accountUpdatePassword) {
+        if (!isAutorized(auth))
+            throw new UnauthorizedException();
+
         if (!AccountUpdatePassword.isValid(accountUpdatePassword))
             throw new DataNotValidException("Account update password error. Email = "+accountUpdatePassword.getEmail());
 
@@ -59,5 +64,14 @@ public class AccountService {
             return authService.create(accountDto.getEmail());
 
         throw new DataNotValidException("Account login not valid for Email = "+accountDto.getEmail());
+    }
+
+    public boolean isAutorized(String key) {
+       String email = authService.getSubject(key);
+       if (StringUtils.isNotBlank(email))
+           return false;
+
+       Account account = accountDao.findByEmail(email);
+       return account != null;
     }
 }
