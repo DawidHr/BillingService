@@ -68,7 +68,7 @@ public class AccountService {
 
     public boolean isAutorized(String key) {
        String email = authService.getSubject(key);
-       if (StringUtils.isNotBlank(email))
+       if (StringUtils.isBlank(email))
            return false;
 
        Account account = accountDao.findByEmail(email);

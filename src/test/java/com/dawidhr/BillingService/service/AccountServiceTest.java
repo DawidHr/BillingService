@@ -54,34 +54,45 @@ class AccountServiceTest {
 
     @Test
     public void updatePasswordRequestNotValidTest() {
-        assertThrows(DataNotValidException.class, () -> accountService.updatePassword(new AccountUpdatePassword()));
+        Account account = new Account();
+        account.setEmail("test@test.pl");
+        when(authService.getSubject(anyString())).thenReturn("test@test.pl");
+        when(accountDao.findByEmail(anyString())).thenReturn(account);
+        assertThrows(DataNotValidException.class, () -> accountService.updatePassword("auth", new AccountUpdatePassword()));
     }
 
     @Test
     public void updatePasswordAccountNotFoundTest() {
-        when(accountDao.findByEmail(anyString())).thenReturn(null);
-        assertThrows(DataNotFoundException.class, () -> accountService.updatePassword(new AccountUpdatePassword("test@test.pl", "test", "test2")));
-        verify(accountDao, times(1)).findByEmail(anyString());
+        Account account = new Account();
+        account.setEmail("test@test.pl");
+        when(authService.getSubject(anyString())).thenReturn("test@test.pl");
+        when(accountDao.findByEmail(anyString())).thenReturn(account).thenReturn(null);
+        assertThrows(DataNotFoundException.class, () -> accountService.updatePassword("auth", new AccountUpdatePassword("test@test.pl", "test", "test2")));
+        verify(accountDao, times(2)).findByEmail(anyString());
         verify(accountDao, never()).update(any());
     }
 
     @Test
     public void updatePasswordOldPassNotValidTest() {
+        when(authService.getSubject(anyString())).thenReturn("test@test.pl");
         Account account = new Account();
+        account.setEmail("test@test.pl");
         account.setPassword("test4");
         when(accountDao.findByEmail(anyString())).thenReturn(account);
-        assertThrows(DataNotValidException.class, () -> accountService.updatePassword(new AccountUpdatePassword("test@test.pl", "test", "test2")));
-        verify(accountDao, times(1)).findByEmail(anyString());
+        assertThrows(DataNotValidException.class, () -> accountService.updatePassword("auth", new AccountUpdatePassword("test@test.pl", "test", "test2")));
+        verify(accountDao, times(2)).findByEmail(anyString());
         verify(accountDao, never()).update(any());
     }
 
     @Test
     public void updatePasswordTest() {
+        when(authService.getSubject(anyString())).thenReturn("test@test.pl");
         Account account = new Account();
+        account.setEmail("test@test.pl");
         account.setPassword("test");
         when(accountDao.findByEmail(anyString())).thenReturn(account);
-        accountService.updatePassword(new AccountUpdatePassword("test@test.pl", "test", "test2"));
-        verify(accountDao, times(1)).findByEmail(anyString());
+        accountService.updatePassword("auth", new AccountUpdatePassword("test@test.pl", "test", "test2"));
+        verify(accountDao, times(2)).findByEmail(anyString());
         verify(accountDao, times(1)).update(any());
     }
 
