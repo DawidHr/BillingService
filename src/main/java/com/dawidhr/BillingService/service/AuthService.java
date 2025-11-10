@@ -16,8 +16,6 @@ public class AuthService {
 
 
     public String getSubject(String auth) {
-        // jwt = JWTCreator.init().withSubject(email).withExpiresAt(LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.UTC)).sign(Algorithm.HMAC256("test"));
-      //  return JWT.create().decodeJwt().withSubject(email).withExpiresAt(LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.UTC)).sign(Algorithm.HMAC256("test"));
         return JWT.decode(auth).getSubject();
     }
 }

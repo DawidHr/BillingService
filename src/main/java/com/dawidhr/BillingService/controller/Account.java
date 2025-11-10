@@ -1,6 +1,7 @@
 package com.dawidhr.BillingService.controller;
 
 import com.dawidhr.BillingService.dto.account.AccountDto;
+import com.dawidhr.BillingService.dto.account.AccountRemindPasswordRequest;
 import com.dawidhr.BillingService.dto.account.AccountUpdatePassword;
 import com.dawidhr.BillingService.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,13 @@ public class Account {
     @RequestMapping("/login")
     public String login(@RequestBody AccountDto accountDto) {
         return accountService.login(accountDto);
+    }
+
+
+    @PostMapping
+    @RequestMapping("/password-remind")
+    public String remindPassword(@RequestBody AccountRemindPasswordRequest remindPasswordRequest) {
+        accountService.remindPassword(remindPasswordRequest);
+        return "Mail was send";
     }
 }

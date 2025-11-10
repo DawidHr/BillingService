@@ -1,5 +1,6 @@
 package com.dawidhr.BillingService.service;
 
+import com.dawidhr.BillingService.dto.account.AccountRemindPasswordRequest;
 import com.dawidhr.BillingService.dto.account.AccountUpdatePassword;
 import com.dawidhr.BillingService.exception.DataAlreadyExistException;
 import com.dawidhr.BillingService.exception.DataNotFoundException;
@@ -73,5 +74,13 @@ public class AccountService {
 
        Account account = accountDao.findByEmail(email);
        return account != null;
+    }
+
+    public void remindPassword(AccountRemindPasswordRequest remindPasswordRequest) {
+        if (!AccountRemindPasswordRequest.isValid(remindPasswordRequest))
+            throw new DataNotValidException("Request not valid");
+
+        Account accountFromDb = accountDao.findByEmail(remindPasswordRequest.getEmail());
+        // send mail
     }
 }
