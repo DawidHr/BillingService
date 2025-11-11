@@ -34,10 +34,10 @@ public class Account {
     @Column(name = "creation_date", nullable=false, updatable = false)
     private LocalDateTime creationDate;
 
-    public static Account create(AccountDto accountDto) {
+    public static Account create(AccountDto accountDto, String encodedPassword) {
         return Account.builder()
                 .email(accountDto.getEmail())
-                .password(accountDto.getPassword())
+                .password(encodedPassword)
                 .role(AccountRole.USER)
                 .build();
     }

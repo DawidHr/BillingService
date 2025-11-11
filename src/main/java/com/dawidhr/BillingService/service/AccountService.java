@@ -11,6 +11,8 @@ import com.dawidhr.BillingService.dao.AccountDao;
 import com.dawidhr.BillingService.dto.account.AccountDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +32,10 @@ public class AccountService {
         if (account != null)
             throw new DataAlreadyExistException("Account already exists.");
 
-        account = Account.create(accountDto);
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(accountDto.getPassword());
+
+        account = Account.create(accountDto, encodedPassword);
         accountDao.save(account);
     }
 
@@ -61,7 +66,10 @@ public class AccountService {
         if (accountFromDb == null)
             throw new DataNotFoundException("Account not found");
 
-        if (accountDto.getPassword().equals(accountFromDb.getPassword()))
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(accountDto.getPassword());
+
+        if (accountDto.getPassword().equals(encodedPassword))
             return authService.create(accountDto.getEmail());
 
         throw new DataNotValidException("Account login not valid for Email = "+accountDto.getEmail());
