@@ -4,6 +4,7 @@ import com.dawidhr.BillingService.dto.bill.BillDto;
 import com.dawidhr.BillingService.dto.bill.BillItemDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Bill {
     private String description;
 
     @Column(name="creation_date",nullable = false)
+    @CreationTimestamp
     private LocalDateTime creationDate;
 
     @Column(name="buy_date",nullable = false)

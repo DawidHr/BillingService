@@ -7,7 +7,9 @@ import com.dawidhr.BillingService.dto.bill.BillDto;
 import com.dawidhr.BillingService.dto.bill.BillItemDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -21,15 +23,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.google.gson.Gson;
 
-@WebMvcTest(BillController.class)
-@Import(GsonConfig.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 class BillServiceMvcTest {
 
     @Autowired
     MockMvc mockMvc;
 
-    @MockitoBean
-    BillService billService;
+/*    @MockitoBean
+    BillService billService;*/
 
     @Autowired
     Gson gson;
@@ -44,6 +46,16 @@ class BillServiceMvcTest {
          request.setItems(List.of(new BillItemDto("test 1", 22.12)));
          mockMvc.perform(post("/api/bill").content(gson.toJson(request)).accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk());
+    }
+
+    @Test
+    public void createBadRequestTest()  throws Exception {
+        BillDto request = new BillDto();
+        request.setBuyDate(LocalDateTime.now());
+        request.setTotalPrice(26.45);
+        request.setItems(List.of(new BillItemDto("test 1", 22.12)));
+        mockMvc.perform(post("/api/bill").content(gson.toJson(request)).accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(400));
     }
 
 }
