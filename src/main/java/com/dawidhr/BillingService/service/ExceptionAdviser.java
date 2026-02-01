@@ -14,7 +14,7 @@ public class ExceptionAdviser {
 
     @ExceptionHandler(DataNotValidException.class)
     public ResponseEntity<String> handle() {
-        return ResponseEntity.internalServerError().body("Could not read file storage");
+        return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(DataAlreadyExistException.class)
